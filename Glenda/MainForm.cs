@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -13,11 +12,30 @@ using System.Windows.Forms;
 
 namespace Glenda
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
+        }
+        
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 0)
+                ClearTab1();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        #region Tab 1
+
+        private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtInput.Clear();
+            txtOutput.Clear();
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -73,6 +91,13 @@ namespace Glenda
             }
         }
 
+        private void ClearTab1()
+        {
+            txtInput.Clear();
+            cmbType.SelectedIndex = 0;
+            txtOutput.Clear();
+        }
+
         private void Debit(DirectoryInfo dir, FileInfo[] files)
         {
             List<string> acctNumbers = new List<string>();
@@ -119,7 +144,6 @@ namespace Glenda
                 File.Delete(oldFileName);
 
                 txtOutput.AppendText(String.Format("\n{0} distinct account numbers outputted to:\n\n{1}", acctNumbers.Count, newFileName));
-                Process.Start(newFileName);
             }
         }
 
@@ -146,17 +170,8 @@ namespace Glenda
             txtOutput.AppendText(String.Format("All less 000000000000 ==> {0:N}\n", lessTotal));
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            txtInput.Clear();
-            cmbType.SelectedIndex = 0;
-            txtOutput.Clear();
-        }
+        #endregion  // Tab 1        
 
-        private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtInput.Clear();
-            txtOutput.Clear();
-        }
+        
     }
 }
